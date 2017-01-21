@@ -5,29 +5,29 @@ function [theta, J_history] = gradientDescent(X, y, theta, alpha, num_iters)
 
 % Initialize some useful values
 m = length(y); % number of training examples
+features = 2;
 J_history = zeros(num_iters, 1);
 
+function t = GDTerm(j)
+  accumulator = 0;
+  
+  for i = 1:m
+    xterm = X(i, :);
+    hypothesis = xterm * theta;
+    accumulator += (hypothesis - y(i)) * xterm(j);
+  end
+  
+  t = (alpha / m) * accumulator;
+end
+
 for iter = 1:num_iters
-
-    % ====================== YOUR CODE HERE ======================
-    % Instructions: Perform a single gradient step on the parameter vector
-    %               theta. 
-    %
-    % Hint: While debugging, it can be useful to print out the values
-    %       of the cost function (computeCost) and gradient here.
-    %
-
-
-
-
-
-
-
-    % ============================================================
-
+    t1 = GDTerm(1);
+    t2 = GDTerm(2);
+    theta(1) -= t1;
+    theta(2) -= t2;
+    
     % Save the cost J in every iteration    
     J_history(iter) = computeCost(X, y, theta);
-
 end
 
 end
