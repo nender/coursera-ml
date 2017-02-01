@@ -37,13 +37,15 @@ grad = zeros(size(theta));
 %
 
 
+meat = sigmoid(X * theta);
 
+cost = sum(-y .* log(meat) - (1 - y) .* log(1 - meat)) / m;
+regularized = ([0 ones(1, length(theta) -1)] * theta .^ 2) * lambda / (2 * m);
+J = cost + regularized;
 
+temp = [0; theta(2:end)] * (lambda / m)
 
-
-
-
-
+grad = (X' * (meat - y)) / m + temp;
 
 % =============================================================
 
