@@ -65,6 +65,8 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
+
+% cost computation via forward propagation
 jacc = 0;
 for i = 1:m
   xi = X(i, :);
@@ -79,6 +81,7 @@ for i = 1:m
   end
 end
 
+% compute regularization terms (loop unrolled for L = 3)
 r1acc = 0;
 for j = 1:size(Theta1,1)
   for i = 2:size(Theta1,2)
@@ -95,9 +98,25 @@ end
 
 J = jacc/m + (lambda/ (2*m)) * (r1acc + r2acc);
 
+% here comes the backprop
 
+for i = 1:m
+  % step 1: forward prop
+  a1 = X(i, :);
+  z2 = Theta1 * a1';
+  a2 = sigmoid(z2)';
+  a2 = [ones(size(a2,1),1) a2];
+  z3 = Theta2 * a2';
+  a3 = sigmoid(z3);
 
-
+  % step 2: calculate d3 error
+  yi = [1:K]' == y(i);
+  d3 = (a3 - yi);
+  
+  % step 4: calculate error for l = 2
+  d2 = (Theta2' * d3) .* sigmoidGradient(z2);
+  
+end
 
 
 
